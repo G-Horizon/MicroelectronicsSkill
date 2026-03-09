@@ -33,45 +33,45 @@ class ParsedLog:
         return bool(self.errors or self.assertions)
 
 
-# Patterns to match different log line categories
+                                                 
 PATTERNS = {
     "error": re.compile(
         r"(?i)"
-        r"(\*\*\s*Error.*|"     # ModelSim error format: ** Error: ...
-        r"Error\s*\(.*\).*|"    # Error (code): message
-        r".*Syntax error.*|"    # Syntax errors
-        r".*Fatal:.*|"          # Fatal errors
-        r"\*\*\s*Fatal.*)"      # ** Fatal: ...
+        r"(\*\*\s*Error.*|"                                           
+        r"Error\s*\(.*\).*|"                           
+        r".*Syntax error.*|"                   
+        r".*Fatal:.*|"                        
+        r"\*\*\s*Fatal.*)"                     
     ),
     "warning": re.compile(
         r"(?i)"
-        r"(\*\*\s*Warning.*|"   # ** Warning: ...
-        r"Warning\s*\(.*\).*)"  # Warning (code): message
+        r"(\*\*\s*Warning.*|"                    
+        r"Warning\s*\(.*\).*)"                           
     ),
     "display": re.compile(
-        r"^#\s+(.*)$"           # ModelSim prefixes $display output with "# "
+        r"^#\s+(.*)$"                                                        
     ),
     "assertion": re.compile(
         r"(?i)"
-        r"(.*\$error.*|"        # $error system task
-        r".*\$fatal.*|"         # $fatal system task
-        r".*Assertion.*fail.*|" # SVA assertion failures
-        r".*FAIL.*|"            # Custom FAIL markers
-        r".*ASSERTION.*)"       # Custom ASSERTION markers
+        r"(.*\$error.*|"                            
+        r".*\$fatal.*|"                             
+        r".*Assertion.*fail.*|"                         
+        r".*FAIL.*|"                                 
+        r".*ASSERTION.*)"                                 
     ),
 }
 
-# Lines to skip (ModelSim boilerplate)
+                                      
 SKIP_PATTERNS = re.compile(
     r"(?i)"
-    r"(^#\s*$|"                  # Empty display lines
-    r"^#\s*Loading.*|"           # Loading messages
-    r"^#\s*Compiling.*|"         # Compilation progress
-    r"^Reading\s+.*|"            # Reading preamble
-    r"^vsim\s+.*|"               # vsim invocation echo
-    r"^Start time:.*|"           # Timestamps
+    r"(^#\s*$|"                                       
+    r"^#\s*Loading.*|"                             
+    r"^#\s*Compiling.*|"                               
+    r"^Reading\s+.*|"                              
+    r"^vsim\s+.*|"                                     
+    r"^Start time:.*|"                       
     r"^End time:.*|"
-    r"^Errors:\s*0,\s*Warnings:\s*0$)"  # Clean summary
+    r"^Errors:\s*0,\s*Warnings:\s*0$)"                 
 )
 
 
@@ -84,31 +84,31 @@ def parse_log(log_text: str) -> ParsedLog:
         if not stripped or SKIP_PATTERNS.match(stripped):
             continue
 
-        # Check for errors
+                          
         if PATTERNS["error"].match(stripped):
             result.errors.append(stripped)
             continue
 
-        # Check for assertion failures (before display, since display captures broadly)
+                                                                                       
         if PATTERNS["assertion"].match(stripped):
-            # Avoid double-counting lines that are also errors
+                                                              
             if stripped not in result.errors:
                 result.assertions.append(stripped)
             continue
 
-        # Check for warnings
+                            
         if PATTERNS["warning"].match(stripped):
             result.warnings.append(stripped)
             continue
 
-        # Check for $display / $monitor output
+                                              
         m = PATTERNS["display"].match(stripped)
         if m:
             content = m.group(1).strip()
-            if content:  # skip empty display lines
+            if content:                            
                 result.display_output.append(content)
 
-    # Build summary
+                   
     parts = []
     if result.errors:
         parts.append(f"{len(result.errors)} error(s)")

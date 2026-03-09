@@ -26,7 +26,7 @@ from pathlib import Path
 
 try:
     import matplotlib
-    matplotlib.use("Agg")  # Non-interactive backend
+    matplotlib.use("Agg")                           
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
     from matplotlib.collections import PatchCollection
@@ -38,9 +38,9 @@ except ImportError:
     sys.exit(1)
 
 
-# ---------------------------------------------------------------------------
-# VCD Parser
-# ---------------------------------------------------------------------------
+                                                                             
+            
+                                                                             
 
 @dataclass
 class VCDSignal:
@@ -49,15 +49,15 @@ class VCDSignal:
     name: str
     width: int
     scope: str
-    full_name: str  # scope.name
+    full_name: str              
 
 
 @dataclass
 class VCDData:
     """Parsed VCD contents."""
-    signals: dict[str, VCDSignal] = field(default_factory=dict)  # id_code -> signal
+    signals: dict[str, VCDSignal] = field(default_factory=dict)                     
     timescale: str = "1ns"
-    changes: list[tuple[int, str, str]] = field(default_factory=list)  # (time, id_code, value)
+    changes: list[tuple[int, str, str]] = field(default_factory=list)                          
 
 
 def parse_vcd(filepath: Path) -> VCDData:
@@ -73,7 +73,7 @@ def parse_vcd(filepath: Path) -> VCDData:
     while i < len(lines):
         line = lines[i].strip()
 
-        # Timescale
+                   
         if line.startswith("$timescale"):
             ts_parts = []
             while "$end" not in line:
@@ -85,7 +85,7 @@ def parse_vcd(filepath: Path) -> VCDData:
             i += 1
             continue
 
-        # Scope
+               
         if line.startswith("$scope"):
             parts = line.split()
             if len(parts) >= 3:
@@ -99,10 +99,10 @@ def parse_vcd(filepath: Path) -> VCDData:
             i += 1
             continue
 
-        # Variable definition
+                             
         if line.startswith("$var"):
             parts = line.split()
-            # $var wire 1 ! clk $end
+                                    
             if len(parts) >= 5:
                 var_type = parts[1]
                 width = int(parts[2])
@@ -120,7 +120,7 @@ def parse_vcd(filepath: Path) -> VCDData:
             i += 1
             continue
 
-        # Timestamp
+                   
         if line.startswith("#"):
             try:
                 current_time = int(line[1:])
@@ -129,7 +129,7 @@ def parse_vcd(filepath: Path) -> VCDData:
             i += 1
             continue
 
-        # Value change — scalar (0/1/x/z followed by id_code)
+                                                             
         m = re.match(r"^([01xXzZ])(.+)$", line)
         if m:
             value = m.group(1)
@@ -138,7 +138,7 @@ def parse_vcd(filepath: Path) -> VCDData:
             i += 1
             continue
 
-        # Value change — vector (b<binary> <id_code>)
+                                                     
         m = re.match(r"^[bB]([01xXzZ]+)\s+(.+)$", line)
         if m:
             value = m.group(1)
@@ -152,11 +152,11 @@ def parse_vcd(filepath: Path) -> VCDData:
     return data
 
 
-# ---------------------------------------------------------------------------
-# Waveform Rendering
-# ---------------------------------------------------------------------------
+                                                                             
+                    
+                                                                             
 
-# Color scheme
+              
 COLORS = {
     "background":    "#1e1e2e",
     "grid":          "#313244",
@@ -182,13 +182,13 @@ def build_waveform_data(
     Build per-signal time-value lists from VCD changes.
     Returns {full_name: [(time, value), ...]}.
     """
-    # Build id_code -> full_name mapping
+                                        
     id_to_name = {s.id_code: s.full_name for s in vcd.signals.values()}
     name_to_id = {s.full_name: s.id_code for s in vcd.signals.values()}
-    # Also allow matching by short name
+                                       
     short_to_id = {s.name: s.id_code for s in vcd.signals.values()}
 
-    # Determine which signals to display
+                                        
     if signal_names:
         selected_ids = set()
         for sn in signal_names:
@@ -197,14 +197,14 @@ def build_waveform_data(
             elif sn in short_to_id:
                 selected_ids.add(short_to_id[sn])
             else:
-                # Fuzzy match: any signal whose name contains the query
+                                                                       
                 for sig in vcd.signals.values():
                     if sn.lower() in sig.full_name.lower() or sn.lower() in sig.name.lower():
                         selected_ids.add(sig.id_code)
     else:
         selected_ids = set(vcd.signals.keys())
 
-    # Collect changes per signal
+                                
     waves: dict[str, list[tuple[int, str]]] = OrderedDict()
     for id_code in selected_ids:
         if id_code in id_to_name:
@@ -237,7 +237,7 @@ def render_waveform(
         print("[plot_waveform] WARNING: No signals to render.", file=sys.stderr)
         return
 
-    # Determine time range
+                          
     all_times = set()
     for changes in waves.values():
         for t, _ in changes:
@@ -251,7 +251,7 @@ def render_waveform(
     if t_end is None:
         t_end = max(all_times)
 
-    # Add a small margin to the end
+                                   
     t_margin = max(1, (t_end - t_start) * 0.05)
     t_plot_end = t_end + t_margin
 
@@ -275,7 +275,7 @@ def render_waveform(
         ax = axes[idx, 0]
         ax.set_facecolor(COLORS["background"])
         sig = None
-        # Find signal metadata
+                              
         for s in vcd.signals.values():
             if s.full_name == sig_name:
                 sig = s
@@ -288,7 +288,7 @@ def render_waveform(
         else:
             _draw_digital_waveform(ax, changes, t_start, t_plot_end)
 
-        # Label
+               
         display_name = sig.name if sig else sig_name.split(".")[-1]
         ax.set_ylabel(
             display_name,
@@ -301,17 +301,17 @@ def render_waveform(
             va="center",
         )
 
-        # Styling
+                 
         ax.set_xlim(t_start, t_plot_end)
         ax.tick_params(axis="x", colors=COLORS["text"], labelsize=8)
         ax.tick_params(axis="y", left=False, labelleft=False)
         for spine in ax.spines.values():
             spine.set_visible(False)
 
-        # Grid
+              
         ax.grid(True, axis="x", color=COLORS["grid"], linewidth=0.5, alpha=0.5)
 
-    # X-axis label on the bottom
+                                
     axes[-1, 0].set_xlabel(
         f"Time ({vcd.timescale})",
         color=COLORS["text"],
@@ -320,7 +320,7 @@ def render_waveform(
 
     plt.tight_layout(rect=[0.08, 0.02, 0.98, 0.95])
 
-    # Save
+          
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(output_path), dpi=150, facecolor=fig.get_facecolor(), edgecolor="none")
     plt.close(fig)
@@ -341,11 +341,11 @@ def _draw_digital_waveform(ax, changes, t_start, t_end):
         elif v in ("0",):
             val = 0
         else:
-            val = 0.5  # x or z
+            val = 0.5          
         times.append(t)
         values.append(val)
 
-    # Extend to plot boundaries
+                               
     plot_times = [t_start] + times + [t_end]
     plot_values = [values[0]] + values + [values[-1]]
 
@@ -375,18 +375,18 @@ def _draw_bus_waveform(ax, changes, t_start, t_end, width):
     texts = []
 
     for i, (t, v) in enumerate(sorted_changes):
-        # Determine segment end
+                               
         if i + 1 < len(sorted_changes):
             t_next = sorted_changes[i + 1][0]
         else:
             t_next = t_end
 
-        # Draw a diamond-shaped transition marker and a rectangle for the stable period
+                                                                                       
         seg_width = t_next - t
         if seg_width <= 0:
             continue
 
-        # Draw the bus band
+                           
         rect = mpatches.FancyBboxPatch(
             (t, 0.1), seg_width, 0.8,
             boxstyle="round,pad=0.02",
@@ -396,15 +396,15 @@ def _draw_bus_waveform(ax, changes, t_start, t_end, width):
         )
         ax.add_patch(rect)
 
-        # Hex label in the center
+                                 
         try:
             int_val = int(v, 2)
             hex_str = f"0x{int_val:0{(width + 3) // 4}X}"
         except ValueError:
-            hex_str = v  # x/z values
+            hex_str = v              
 
         mid_t = t + seg_width / 2
-        if seg_width > (t_end - t_start) * 0.03:  # Only label if segment is wide enough
+        if seg_width > (t_end - t_start) * 0.03:                                        
             ax.text(
                 mid_t, 0.5, hex_str,
                 ha="center", va="center",
@@ -416,9 +416,9 @@ def _draw_bus_waveform(ax, changes, t_start, t_end, width):
     ax.set_ylim(-0.2, 1.4)
 
 
-# ---------------------------------------------------------------------------
-# Demo mode
-# ---------------------------------------------------------------------------
+                                                                             
+           
+                                                                             
 
 DEMO_VCD = """\
 $timescale 1ns $end
@@ -510,14 +510,14 @@ def run_demo(output_dir: Path) -> None:
     output_path = output_dir / "demo_waveform.png"
     render_waveform(waves, vcd, output_path, title="Demo: 4-bit Counter Waveform")
 
-    # Clean up temp VCD
+                       
     demo_vcd_path.unlink(missing_ok=True)
     print(f"[plot_waveform] Demo waveform generated at {output_path}")
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+                                                                             
+      
+                                                                             
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -575,15 +575,15 @@ def main() -> None:
         print(f"ERROR: VCD file not found: {args.vcd}", file=sys.stderr)
         sys.exit(1)
 
-    # Parse
+           
     vcd = parse_vcd(vcd_path)
     print(f"[plot_waveform] Parsed {len(vcd.signals)} signals, {len(vcd.changes)} transitions.")
 
-    # Build waveform data
+                         
     waves = build_waveform_data(vcd, signal_names=args.signals, t_start=args.start, t_end=args.end)
     print(f"[plot_waveform] Rendering {len(waves)} signal(s)...")
 
-    # Determine output path
+                           
     if args.output:
         output_path = Path(args.output)
     else:

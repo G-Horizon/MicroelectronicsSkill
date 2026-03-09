@@ -20,7 +20,7 @@ def run_cmd(cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProce
         cwd=cwd,
         capture_output=True,
         text=True,
-        timeout=1800,  # 30-minute timeout for large designs
+        timeout=1800,                                       
     )
     return result
 
@@ -48,7 +48,7 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    # Map flow names to quartus_sh arguments
+                                            
     flow_map = {
         "compile": "compile",
         "analysis_and_synthesis": "analysis_and_synthesis",
@@ -68,7 +68,7 @@ def main() -> None:
 
     result = run_cmd(cmd, cwd=args.cwd)
 
-    # Print output
+                  
     if result.stdout:
         print(result.stdout)
     if result.stderr:

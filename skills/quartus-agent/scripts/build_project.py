@@ -122,13 +122,13 @@ def main() -> None:
 
     pin_list = parse_pin_string(args.pins)
 
-    # Write .qpf
+                
     qpf_path = out_dir / f"{args.name}.qpf"
     qpf_content = generate_qpf(args.name)
     qpf_path.write_text(qpf_content, encoding="utf-8")
     print(f"[build_project] Created {qpf_path}")
 
-    # Write .qsf
+                
     qsf_path = out_dir / f"{args.name}.qsf"
     qsf_content = generate_qsf(
         project_name=args.name,

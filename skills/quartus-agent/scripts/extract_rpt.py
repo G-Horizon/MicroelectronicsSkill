@@ -37,7 +37,7 @@ class CompileReport:
         return bool(self.errors or self.timing_violations)
 
 
-# Regex patterns for report parsing
+                                   
 RESOURCE_PATTERNS = {
     "Total logic elements": re.compile(
         r"Total logic elements\s*[;:]\s*(.+?)(?:\s*$)", re.IGNORECASE
@@ -95,7 +95,7 @@ def parse_rpt_file(filepath: Path) -> tuple[list[str], list[str], dict[str, str]
     for line in text.splitlines():
         stripped = line.strip()
 
-        # Errors
+                
         if ERROR_PATTERN.match(stripped):
             errors.append(stripped)
             continue
@@ -104,24 +104,24 @@ def parse_rpt_file(filepath: Path) -> tuple[list[str], list[str], dict[str, str]
             critical_warnings.append(f"[LATCH WARNING] {stripped}")
             continue
 
-        # Critical warnings
+                           
         if CRITICAL_WARNING_PATTERN.match(stripped):
             critical_warnings.append(stripped)
             continue
 
-        # Resource usage
+                        
         for name, pattern in RESOURCE_PATTERNS.items():
             m = pattern.search(stripped)
             if m:
                 resources[name] = m.group(1).strip().rstrip(";").strip()
                 break
 
-        # Fmax
+              
         m = FMAX_PATTERN.search(stripped)
         if m:
             fmax_results.append(m.group(1).strip())
 
-        # Slack / violations
+                            
         m = SLACK_PATTERN.search(stripped)
         if m:
             slack_type = m.group(1)
@@ -136,7 +136,7 @@ def extract_reports(project_name: str, project_dir: Path) -> CompileReport:
     """Parse all .rpt files in the project directory."""
     report = CompileReport()
 
-    # Look for .rpt files in output_files/ and the project dir itself
+                                                                     
     rpt_dirs = [project_dir, project_dir / "output_files"]
     rpt_files = []
     for d in rpt_dirs:
@@ -227,7 +227,7 @@ def main() -> None:
 
     report = extract_reports(args.project, project_dir)
 
-    # Build JSON representation
+                               
     json_output = {
         "status": "SUCCESS" if report.success else "FAILED",
         "timestamp": datetime.now().isoformat(),
@@ -238,7 +238,7 @@ def main() -> None:
         "critical_warnings": report.critical_warnings,
     }
 
-    # Write to file if --output specified
+                                         
     if args.output:
         out_path = Path(args.output)
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -247,7 +247,7 @@ def main() -> None:
         )
         print(f"[extract_rpt] Report saved to {out_path}")
 
-    # Print to console
+                      
     if args.json or args.output:
         print(json.dumps(json_output, indent=2))
     else:
