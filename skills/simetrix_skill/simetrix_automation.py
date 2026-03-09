@@ -36,54 +36,6 @@ class SimplisAutomator:
             # 如果出错则尝试后备方式提取
             return self.output_text.legacy_properties().get('Value', '')
 
-    def check_and_dismiss_popups(self, auto_close: bool = True) -> list:
-        """
-        检查并处理 SIMPLIS 主窗口之外弹出的对话框（如错误提示、覆盖确认等）。
-        :param auto_close: 是否尝试自动关闭弹窗或点击默认按钮（如 OK, Yes）
-        :return: 返回捕获到的弹出窗口信息列表
-        """
-        popups = []
-        try:
-            # 获取当前应用的全部顶层窗口
-            windows = self.app.windows()
-            for win in windows:
-                title = win.window_text()
-                # 排除主窗口，只关注额外的弹出窗口，且窗口必须处于可见状态
-                if "Main Window" not in title and win.is_visible():
-                    texts = [t for t in win.texts() if t and t != title]
-                    popups.append({
-                        "title": title,
-                        "texts": texts
-                    })
-                    print(f"\n⚠️ [弹窗拦截] 检测到意外弹窗: '{title}'")
-                    print(f"   弹窗内文本: {texts}")
-                    
-                    if auto_close:
-                        try:
-                            # 尝试找常见的确认或关闭按钮并点击
-                            btn_clicked = False
-                            for btn_name in ["OK", "Ok", "确定", "Yes", "是", "Close", "关闭"]:
-                                try:
-                                    btn = win.child_window(title=btn_name, control_type="Button")
-                                    if btn.exists():
-                                        btn.invoke()
-                                        print(f"   -> 已自动点击 [{btn_name}] 按钮")
-                                        btn_clicked = True
-                                        break
-                                except Exception:
-                                    pass
-                            
-                            # 如果没找到标准按钮，使用通用关闭动作
-                            if not btn_clicked:
-                                win.close()
-                                print("   -> 已强制发送关闭窗口指令")
-                        except Exception as e:
-                            print(f"   -> 关闭弹窗失败: {e}")
-        except Exception as e:
-            print(f"监控弹窗时异常: {e}")
-            
-        return popups
-
     def send_command(self, cmd: str, timeout: float = 2.0, check_interval: float = 0.1) -> str:
         """
         向Command Shell发送指令，并返回该次指令产生的新增输出内容。
@@ -104,7 +56,6 @@ class SimplisAutomator:
         
         # 轮询检查终端是否有新内容
         start_time = time.time()
-        last_popup_check = start_time
         while True:
             new_output = self.get_full_output()
             if len(new_output) > len(old_output):
@@ -113,15 +64,8 @@ class SimplisAutomator:
                 new_output = self.get_full_output()
                 break
             
-            # 定期检查是否有弹窗阻塞了流程
-            current_time = time.time()
-            if current_time - last_popup_check > 0.5:
-                self.check_and_dismiss_popups(auto_close=True)
-                last_popup_check = current_time
-
-            if current_time - start_time > timeout:
-                # 超时之前最后检查一次残留弹窗
-                self.check_and_dismiss_popups(auto_close=True)
+            if time.time() - start_time > timeout:
+                # 超时则跳出
                 break
             
             time.sleep(check_interval)
