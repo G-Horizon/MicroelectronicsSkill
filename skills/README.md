@@ -1,94 +1,98 @@
-> **Note:** This repository contains Anthropic's implementation of skills for Claude. For information about the Agent Skills standard, see [agentskills.io](http://agentskills.io).
+## 准备工作：
 
-# Skills
-Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way, whether that's creating documents with your company's brand guidelines, analyzing data using your organization's specific workflows, or automating personal tasks.
+### 环境准备
 
-For more information, check out:
-- [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
-- [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
-- [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
-- [Equipping agents for the real world with Agent Skills](https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
+1. 安装**git**，**nodejs**，**claude code**，python，配置好环境变量，能在命令行窗口里直接访问、并且不报错即可。
 
-# About This Repository
+> **验证方法**：按下Win+R，输入cmd，回车，分别尝试“git”，“node”，“claude”，“python”这几个命令，如果能正确显示出来、而不是显示“×××不是内部或外部命令，也不是可运行的程序或批处理文件”即可。
 
-This repository contains skills that demonstrate what's possible with Claude's skills system. These skills range from creative applications (art, music, design) to technical tasks (testing web apps, MCP server generation) to enterprise workflows (communications, branding, etc.).
+> 如果没有claude会员，这里提供一种基于deepseek的替代方案：
+>
+> 在deepseek官网的API开放平台注册一个key：访问https://platform.deepseek.com/usage，注册、登录、充值、创建API Key：
+>
+> <img src="C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309235651296.png" alt="image-20260309235651296" style="zoom: 25%;" />
+>
+> （务必记住Key，因为它只显示一次）
+>
+> 在环境变量中添加以下三个变量：
+>
+> **ANTHROPIC_AUTH_TOKEN**：sk-.....（填入key）
+>
+> **ANTHROPIC_BASE_URL**：https://api.deepseek.com/anthropic
+>
+> **ANTHROPIC_MODEL**：deepseek-reasoner
+>
+> （如果使用其他URL，注意：URL末尾没有“v3"/"v1"！！因为这是anthropic协议，而非更为常见的openai协议）
+>
+> 配置好的结果如图所示：
+>
+> <img src="C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309235422927.png" alt="image-20260309235422927" style="zoom:33%;" />
 
-Each skill is self-contained in its own folder with a `SKILL.md` file containing the instructions and metadata that Claude uses. Browse through these skills to get inspiration for your own skills or to understand different patterns and approaches.
+2. 安装好modelsim、quartus、simetrix并配置好环境变量。
 
-Many skills in this repo are open source (Apache 2.0). We've also included the document creation & editing skills that power [Claude's document capabilities](https://www.anthropic.com/news/create-files) under the hood in the [`skills/docx`](./skills/docx), [`skills/pdf`](./skills/pdf), [`skills/pptx`](./skills/pptx), and [`skills/xlsx`](./skills/xlsx) subfolders. These are source-available, not open source, but we wanted to share these with developers as a reference for more complex skills that are actively used in a production AI application.
+> 验证方法：按下Win+R，输入cmd，回车，分别尝试“modelsim”，“simetrix”这几个命令，如果能正确显示出一些东西、而不是显示“×××不是内部或外部命令，也不是可运行的程序或批处理文件”即可。
 
-## Disclaimer
+> 如果显示“不是内部或外部命令，也不是可运行的程序或批处理文件”，那么，需要将目录添加到环境变量里：
+>
+> 1. 返回桌面
+> 2. 右键单击软件图标
+> 3. “跳转到文件所在位置”
+> 4. 把其所在文件夹的地址复制下来
+> 5. 打开环境变量
+> 6. 系统变量
+> 7. Path项
+> 8. 双击
+> 9. 新建
+> 10. 粘贴进去
+> 11. 确定确定确定
 
-**These skills are provided for demonstration and educational purposes only.** While some of these capabilities may be available in Claude, the implementations and behaviors you receive from Claude may differ from what is shown in these skills. These skills are meant to illustrate patterns and possibilities. Always test skills thoroughly in your own environment before relying on them for critical tasks.
+> 注意，modelsim的版本为Modelsim SE-64 10.4；quartus的版本为Quartus (Quartus Prime 18.0) Standard Edition；simetrix和simplis是绑定在一块的，他们有各自的专精的领域，但是他们两个操控的底层语言是不一样的，官方文档里只有simetrix的命令讲解，为了避免冲突，此处只使用simetrix的相关命令，放弃一切simplis相关的关键字；simetrix这里用的版本是：SIMetrix-SIMPLIS 8.20。
+>
+> 不同版本的软件，没验证过。
+>
+> quartus没验证过，不保证百分百能跑通。
 
-# Skill Sets
-- [./skills](./skills): Skill examples for Creative & Design, Development & Technical, Enterprise & Communication, and Document Skills
-- [./spec](./spec): The Agent Skills specification
-- [./template](./template): Skill template
+### 使用git命令下载相关skills并且维持更新
 
-# Try in Claude Code, Claude.ai, and the API
+#### 首次使用：
 
-## Claude Code
-You can register this repository as a Claude Code Plugin marketplace by running the following command in Claude Code:
-```
-/plugin marketplace add anthropics/skills
-```
+1. 在D盘新建一个文件夹，名为ClaudeCode，进入，点击上方地址栏输入cmd并按下回车；
+2. 输入下方命令，克隆开发者的仓库：
 
-Then, to install a specific set of skills:
-1. Select `Browse and install plugins`
-2. Select `anthropic-agent-skills`
-3. Select `document-skills` or `example-skills`
-4. Select `Install now`
-
-Alternatively, directly install either Plugin via:
-```
-/plugin install document-skills@anthropic-agent-skills
-/plugin install example-skills@anthropic-agent-skills
-```
-
-After installing the plugin, you can use the skill by just mentioning it. For instance, if you install the `document-skills` plugin from the marketplace, you can ask Claude Code to do something like: "Use the PDF skill to extract the form fields from `path/to/some-file.pdf`"
-
-## Claude.ai
-
-These example skills are all already available to paid plans in Claude.ai. 
-
-To use any skill from this repository or upload custom skills, follow the instructions in [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude#h_a4222fa77b).
-
-## Claude API
-
-You can use Anthropic's pre-built skills, and upload custom skills, via the Claude API. See the [Skills API Quickstart](https://docs.claude.com/en/api/skills-guide#creating-a-skill) for more.
-
-# Creating a Basic Skill
-
-Skills are simple to create - just a folder with a `SKILL.md` file containing YAML frontmatter and instructions. You can use the **template-skill** in this repository as a starting point:
-
-```markdown
----
-name: my-skill-name
-description: A clear description of what this skill does and when to use it
----
-
-# My Skill Name
-
-[Add your instructions here that Claude will follow when this skill is active]
-
-## Examples
-- Example usage 1
-- Example usage 2
-
-## Guidelines
-- Guideline 1
-- Guideline 2
+```Bash
+git clone https://github.com/G-Horizon/MicroelectronicsSkill.git
 ```
 
-The frontmatter requires only two fields:
-- `name` - A unique identifier for your skill (lowercase, hyphens for spaces)
-- `description` - A complete description of what the skill does and when to use it
+此时目录下会多出一个MicroelectronicsSkill文件夹，如图所示，所有项目呈现“done”状态，即下载完毕。
 
-The markdown content below contains the instructions, examples, and guidelines that Claude will follow. For more details, see [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills).
+![image-20260309231817053](C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309231817053.png)
 
-# Partner Skills
+#### 后续更新
 
-Skills are a great way to teach Claude how to get better at using specific pieces of software. As we see awesome example skills from partners, we may highlight some of them here:
+1. 打开ClaudeCode\MicroelectronicsSkill文件夹
+2. 点击上方地址栏输入cmd按下回车打开命令行窗口，输入下面的更新指令并按Enter执行：
 
-- **Notion** - [Notion Skills for Claude](https://www.notion.so/notiondevs/Notion-Skills-for-Claude-28da4445d27180c7af1df7d8615723d0)
+```Bash
+git pull
+```
+
+![image-20260309232037554](C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309232037554.png)
+
+3. 如图所示完成更新。
+
+## 使用方法
+
+1. 打开ClaudeCode\MicroelectronicsSkill目录，点击上方地址栏，输入claude并按回车，打开claude code。
+
+<img src="C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309233621608.png" alt="image-20260309233621608" style="zoom:50%;" />
+
+2. 按下回车，“Yes, I trust this folder"。 
+3. 如果不确定skills是否成功加载，可以输入“？“按下回车发送，如果看到下面类似的描述，就对了：
+
+![image-20260309234244627](C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309234244627.png)
+
+![image-20260309234300190](C:\Users\Blizzard\AppData\Roaming\Typora\typora-user-images\image-20260309234300190.png)
+
+> 因为目前prompt并未优化至最佳状态，所以最好能指定它调用哪个skill。
+
+> 目前这几个skill能在本地跑通，暂未在虚拟机上验证，代码里可能出现绝对地址，进而报错，后续会补充的。
