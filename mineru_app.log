@@ -1,0 +1,47 @@
+2026-02-25 21:40:41,482 - INFO - 🚀 任务启动，准备处理 1 个文件
+2026-02-25 21:40:41,483 - INFO - 正在向服务器申请上传令牌...
+2026-02-25 21:40:41,931 - INFO - ✅ 批次创建成功 (BatchID: d30875d7-041f-44ff-8e30-4dcc78577777)
+2026-02-25 21:40:41,932 - INFO - 📤 [1/1] 正在上传: ScriptReference.pdf
+2026-02-25 21:40:42,626 - INFO - 📡 所有文件上传完毕，开始轮询解析状态...
+2026-02-25 21:40:48,016 - ERROR - ❌ ScriptReference.pdf 解析失败: number of pages exceeds limit, please split the file and try again
+2026-02-25 21:40:48,017 - INFO - ✨ 所有任务处理流程结束！
+2026-02-25 21:42:00,903 - INFO - 🚀 任务启动，准备处理 2 个文件
+2026-02-25 21:42:00,903 - INFO - 正在向服务器申请上传令牌...
+2026-02-25 21:42:01,291 - INFO - ✅ 批次创建成功 (BatchID: be1f9bb7-b989-4d33-8322-78fff6a898f8)
+2026-02-25 21:42:01,292 - INFO - 📤 [1/2] 正在上传: ScriptReference_p001-506.pdf
+2026-02-25 21:42:03,454 - INFO - 📤 [2/2] 正在上传: ScriptReference_p507-691.pdf
+2026-02-25 21:42:04,139 - INFO - 📡 所有文件上传完毕，开始轮询解析状态...
+2026-02-25 21:48:06,210 - INFO - 🎉 ScriptReference_p507-691.pdf 解析完成，开始下载处理...
+2026-02-25 21:48:06,212 - INFO - ⬇️ 正在下载结果包: ScriptReference_p507-691.pdf
+2026-02-25 21:48:07,142 - INFO -     重命名文件: full.md -> ScriptReference_p507-691.md
+2026-02-25 21:48:07,142 - INFO -     └── 已将 1 个 'full' 文件重命名为 'ScriptReference_p507-691'
+2026-02-25 21:48:07,143 - INFO - 📂 结果已归档并重命名至: E:\MinerU_Results\ScriptReference_p507-691
+2026-02-25 21:50:05,201 - INFO - 🎉 ScriptReference_p001-506.pdf 解析完成，开始下载处理...
+2026-02-25 21:50:05,202 - INFO - ⬇️ 正在下载结果包: ScriptReference_p001-506.pdf
+2026-02-25 21:50:07,457 - INFO -     重命名文件: full.md -> ScriptReference_p001-506.md
+2026-02-25 21:50:07,457 - INFO -     └── 已将 1 个 'full' 文件重命名为 'ScriptReference_p001-506'
+2026-02-25 21:50:07,457 - INFO - 📂 结果已归档并重命名至: E:\MinerU_Results\ScriptReference_p001-506
+2026-02-25 21:50:07,459 - INFO - ✨ 所有任务处理流程结束！
+2026-02-25 22:12:47,780 - INFO - 🚀 任务启动，准备处理 2 个文件
+2026-02-25 22:12:47,781 - INFO - 正在向服务器申请上传令牌...
+2026-02-25 22:12:48,250 - INFO - ✅ 批次创建成功 (BatchID: eb848068-b4bf-4937-a8db-31f367f56a2f)
+2026-02-25 22:12:48,251 - INFO - 📤 [1/2] 正在上传: ScriptReference_p001-506.pdf
+2026-02-25 22:12:49,425 - INFO - 📤 [2/2] 正在上传: ScriptReference_p507-691.pdf
+2026-02-25 22:12:50,211 - INFO - 📡 所有文件上传完毕，开始轮询解析状态...
+2026-02-25 22:13:34,335 - INFO - 🎉 ScriptReference_p507-691.pdf 解析完成，开始下载处理...
+2026-02-25 22:13:34,335 - INFO - ⬇️ 正在下载结果包: ScriptReference_p507-691.pdf
+2026-02-25 22:13:35,445 - INFO -     重命名文件: full.docx -> ScriptReference_p507-691.docx
+2026-02-25 22:13:35,446 - INFO -     重命名文件: full.html -> ScriptReference_p507-691.html
+2026-02-25 22:13:35,447 - INFO -     重命名文件: full.md -> ScriptReference_p507-691.md
+2026-02-25 22:13:35,447 - INFO -     重命名文件: full.tex -> ScriptReference_p507-691.tex
+2026-02-25 22:13:35,448 - INFO -     └── 已将 4 个 'full' 文件重命名为 'ScriptReference_p507-691'
+2026-02-25 22:13:35,448 - INFO - 📂 结果已归档并重命名至: E:\MinerU_Results\ScriptReference_p507-691
+2026-02-25 22:14:41,080 - INFO - 🎉 ScriptReference_p001-506.pdf 解析完成，开始下载处理...
+2026-02-25 22:14:41,081 - INFO - ⬇️ 正在下载结果包: ScriptReference_p001-506.pdf
+2026-02-25 22:14:44,748 - INFO -     重命名文件: full.docx -> ScriptReference_p001-506.docx
+2026-02-25 22:14:44,749 - INFO -     重命名文件: full.html -> ScriptReference_p001-506.html
+2026-02-25 22:14:44,750 - INFO -     重命名文件: full.md -> ScriptReference_p001-506.md
+2026-02-25 22:14:44,751 - INFO -     重命名文件: full.tex -> ScriptReference_p001-506.tex
+2026-02-25 22:14:44,751 - INFO -     └── 已将 4 个 'full' 文件重命名为 'ScriptReference_p001-506'
+2026-02-25 22:14:44,752 - INFO - 📂 结果已归档并重命名至: E:\MinerU_Results\ScriptReference_p001-506
+2026-02-25 22:14:44,754 - INFO - ✨ 所有任务处理流程结束！

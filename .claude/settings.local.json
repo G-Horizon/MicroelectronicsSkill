@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(dir C:\\\\skills-main\\\\skills-main\\\\skills\\\\simetrix_skill:*)"
+    ]
+  }
+}
