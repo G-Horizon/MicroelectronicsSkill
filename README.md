@@ -10,7 +10,7 @@
 >
 > 在deepseek官网的API开放平台注册一个key：访问https://platform.deepseek.com/usage，注册、登录、充值、创建API Key：
 >
-> <img src="README_FIGURE\image-20260309235651296.png" alt="image-20260309235651296" style="zoom: 25%;" />
+> <img src="README_FIGURE/image-20260309235651296.png" alt="README_FIGURE/image-20260309235651296" style="zoom: 25%;" />
 >
 > （务必记住Key，因为它只显示一次）
 >
@@ -26,7 +26,7 @@
 >
 > 配置好的结果如图所示：
 >
-> <img src="README_FIGURE\image-20260309235422927.png" alt="image-20260309235422927" style="zoom:33%;" />
+> <img src="README_FIGURE/image-20260309235422927.png" alt="README_FIGURE/image-20260309235422927" style="zoom:33%;" />
 
 2. 安装好modelsim、quartus、simetrix并配置好环境变量。
 
@@ -65,33 +65,33 @@ git clone https://github.com/G-Horizon/MicroelectronicsSkill.git
 
 此时目录下会多出一个MicroelectronicsSkill文件夹，如图所示，所有项目呈现“done”状态，即下载完毕。
 
-![image-20260309231817053](README_FIGURE\image-20260309231817053.png)
+![image-20260309231817053](README_FIGURE/image-20260309231817053.png)
 
 #### 后续更新
 
-1. 打开ClaudeCode\MicroelectronicsSkill文件夹
+1. 打开ClaudeCode/MicroelectronicsSkill文件夹
 2. 点击上方地址栏输入cmd按下回车打开命令行窗口，输入下面的更新指令并按Enter执行：
 
 ```Bash
 git pull
 ```
 
-![image-20260309232037554](README_FIGURE\image-20260309232037554.png)
+![image-20260309232037554](README_FIGURE/image-20260309232037554.png)
 
 3. 如图所示完成更新。
 
 ## 使用方法
 
-1. 打开ClaudeCode\MicroelectronicsSkill目录，点击上方地址栏，输入claude并按回车，打开claude code。
+1. 打开ClaudeCode/MicroelectronicsSkill目录，点击上方地址栏，输入claude并按回车，打开claude code。
 
-<img src="README_FIGURE\image-20260309233621608.png" alt="image-20260309233621608" style="zoom:50%;" />
+<img src="README_FIGURE/image-20260309233621608.png" alt="README_FIGURE/image-20260309233621608" style="zoom:50%;" />
 
 2. 按下回车，“Yes, I trust this folder"。 
 3. 如果不确定skills是否成功加载，可以输入“？“按下回车发送，如果看到下面类似的描述，就对了：
 
-![image-20260309234244627](README_FIGURE\image-20260309234244627.png)
+![image-20260309234244627](README_FIGURE/image-20260309234244627.png)
 
-![image-20260309234300190](README_FIGURE\image-20260309234300190.png)
+![image-20260309234300190](README_FIGURE/image-20260309234300190.png)
 
 > 因为目前prompt并未优化至最佳状态，所以最好能指定它调用哪个skill。
 
