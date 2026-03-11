@@ -1,0 +1,9 @@
+# Dependencies for Claude Code skills
+# Generated from scanning Python scripts in skills directory
+# Python 3.10+ required for type hint syntax (str | None)
+
+# simetrix_skill dependency
+pywinauto>=0.6.8
+
+# waveform-viewer dependency
+matplotlib>=3.5.0
