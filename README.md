@@ -4,6 +4,8 @@
 
 1. 安装**git**，**nodejs**，**claude code**，python，配置好环境变量，能在命令行窗口里直接访问、并且不报错即可。
 
+> 使用pip install -r requirements.txt可以快速安装所有依赖
+
 > claude code安装命令（powershell）：`irm https://claude.ai/install.ps1 | iex`
 
 > 为了避免随着时间推移，C盘被python慢慢占满的问题，可以使用miniconda或者anaconda创建一个虚拟环境，让整个程序运行在虚拟环境里，方便管理。这里miniconda足够了。
